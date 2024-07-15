@@ -3,7 +3,6 @@ from django.forms import ModelForm, Form
 from .models import User, Company, Customer, Item, Invoice, Invoice_line
 
 class company_form(ModelForm):
-    
     class Meta:
         model = Company
         fields = "__all__"

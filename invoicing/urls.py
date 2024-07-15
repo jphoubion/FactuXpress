@@ -5,4 +5,5 @@ app_name = "invoicing"
 
 urlpatterns = [
     path("", views.index, name='index'),
+    path("companies", views.display_companies, name="companies"),
 ]

@@ -1,5 +1,9 @@
+import datetime
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+import django.utils.timezone
+from datetime import datetime
 
 
 class User(AbstractUser):
@@ -226,13 +230,15 @@ class Company(models.Model):
     email = models.EmailField(blank=True, null=True)
     is_dealer_or_customer = models.CharField(max_length=20,choices=(("dealer", "Dealer"), ("customer", "Customer")),
                                             blank=False,default='customer',help_text="Sélectionnez une ou plusieurs valeurs")
+    is_active = models.BooleanField(default=True) # because not allowed to delete company
 
     def __str__(self) -> str:
         return f"{self.name} {self.type} - {self.city}"
 
 class Customer(models.Model):
-    lastname = models.CharField(max_length=30, unique=True, blank=False, null=False)
-    firstname = models.CharField(max_length=30, unique=True, blank=False, null=False)
+    company = models.ForeignKey(Company,on_delete=models.PROTECT)
+    lastname = models.CharField(max_length=30, blank=False, null=False)
+    firstname = models.CharField(max_length=30, blank=False, null=False)
     street = models.CharField(max_length=100,blank=True,null=True)
     number = models.CharField(max_length=10,blank=True,null=True)
     box = models.CharField(max_length=10, blank=True, null=True)
@@ -241,30 +247,46 @@ class Customer(models.Model):
     country = models.CharField(choices=Company.COUNTRIES, max_length=40, blank=False,default='belgique')
     phone = models.CharField(max_length=30, blank=True, null=True)
     email = models.EmailField(blank=True,null=True)
-    company = models.ForeignKey(Company,on_delete=models.CASCADE)
+    is_active = models.BooleanField(default=True)  # because not allowed to delete company
 
     def __str__(self) -> str:
         return f"{self.lastname} {self.firstname}"
 
+class Unities_of_measure(models.Model):
+    short_description = models.CharField(max_length=10, blank=False, null=True, unique=True)
+    long_description = models.CharField(max_length=30, blank=False, null=True)
+
+    def __str__(self):
+        return f"{self.long_description} ({self.short_description})"
 
 class Item(models.Model):
-    UNITY_OF_MESURE = (
-        ('M', 'Mètre(s)'),
-        ('KG', 'KG'),
-        ('PC', 'Pièce(s)')
-    )
+    # UNITY_OF_MESURE = (
+    #     ('M', 'Mètre(s)'),
+    #     ('KG', 'KG'),
+    #     ('PC', 'Pièce(s)')
+    # )
     fastcode = models.CharField(max_length=10, blank=False, unique=True)
     description = models.TextField(max_length=255, blank=True)
-    unity_of_mesure = models.CharField(max_length=10,choices=UNITY_OF_MESURE)
+    unity_of_measure = models.ForeignKey(Unities_of_measure,on_delete=models.PROTECT, null=True)
     unit_price = models.DecimalField(max_digits=10,decimal_places=2,blank=False, null=0)
     remark = models.TextField(max_length=255)
+    is_a_group_item = models.BooleanField(blank=False, default=False)
+    is_a_child_item = models.BooleanField(blank=False, default=False)
+    parent_of_child_item = models.ForeignKey('self', on_delete=models.PROTECT, blank=True, null=True)
 
     def __str__(self) -> str:
-        return f"{self.fastcode} {self.description} : price = {self.unit_price}"
+        return (f"Aticle groupé : {self.is_a_group_item}\nArticle enfant : {self.is_a_child_item}\n{self.fastcode}"
+                f" {self.description} : price = {self.unit_price}")
 
 class Invoice(models.Model):
-    pass
+    customer = models.ForeignKey(Customer,on_delete=models.PROTECT, blank=False, null=True)
+    creation_date_time = models.DateTimeField(default=datetime.now())
+    reference = models.CharField(max_length=15, blank=False,default='XXX/XXXX/XXXXXX') # ex: FAC/2024/123456
+    status = models.CharField(max_length=10,choices=(('quotation','Quotation'), ('command','Command'),('invoice', 'Invoice')),default='quotation')
 
+    def __str__(self):
+        return f"{self.reference} - {self.customer} - {self.creation_date_time}"
 
 class Invoice_line(models.Model):
-    pass
+    invoice = models.ForeignKey(Invoice,on_delete=models.PROTECT, blank=False, null=True)
+

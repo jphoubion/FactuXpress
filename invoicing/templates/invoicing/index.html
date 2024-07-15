@@ -1,37 +1,87 @@
+{% extends 'invoicing/base.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
 {% load tailwind_filters %}
 
-<!doctype html>
-<html>
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="{% static 'src/style.css' %}" rel="stylesheet">
-</head>
-<body>
-    <div class="container mx-auto my-2 p-6 border border-slate-400 rounded">
-        <h1 class="text-5xl mb-4">FactuXpress</h1>
-        {{ form.as_p }}
-        <table class="table bg-slate-500">
-            <thead class="text-xs text-white uppercase">
-                <tr>
-                    <th class="px-6 py-3">Date</th>
-                    <th class="px-6 py-3">Category</th>
-                    <th class="px-6 py-3">Type</th>
-                    <th class="px-6 py-3">Amount</th>
-                </tr>
-            </thead>
+{% block title %}
+<h1 class="text-3xl bold bg-slate-600 p-2  mb-2">Tableau de bord</h1>
+{% endblock title%}
 
-            <tbody class="bg-slate-800">
-                    <tr>
-                        <td>qsdfqdsfqsdf</td>
-                        <td>qsdfqsdfsqdfsqdfsqfdsq</td>
-                        <td>sdqfqsdfsdqf</td>
-                        <td>qsdfsqdfsqd</td>
-                    </tr>
-            </tbody>
-        </table>
+{% block content %}
+    <div class="grid grid-cols-4 gap-2">
+        <div class="text-center">
+            <h2 class="text-xl mb-2 bg-slate-400 p-2 ">Sociétés ({{ companies.count  }})</h2>
+            <select class="w-full p-2 " size="15">
+                {% for company in companies %}
+                    <option class="p-1 text-slate-600" value="{{ company.id }}">{{ company.name }}</option>
+                {% endfor %}
+            </select>
+            <div class="grid grid-cols-4 gap-1 m-2">
+                <button class="w-full px-2  bg-green-400 text-green-800">Ajouter</button>
+                <button class="w-full px-2  bg-blue-400 text-blue-800">Modifier</button>
+                <button class="w-full px-2  bg-red-400 text-red-800">Désactiver</button>
+                <button class="w-full px-2  bg-purple-400 text-red-800">Facturer</button>
+            </div>
+        </div>
+        <div class="text-center">
+            <h2 class="text-xl mb-2 bg-slate-400 p-2 ">Clients ({{ customers.count  }})</h2>
+            <select class="w-full p-2" size="15">
+                {% for customer in customers %}
+                    <option class="p-1 text-slate-600" value="{{ customer.id }}">{{ customer.lastname }} {{ customer.firstname }}</option>
+                {% endfor %}
+            </select>
+            <div class="grid grid-cols-4 gap-1 m-2">
+                <button class="w-full px-2  bg-green-400 text-green-800">Ajouter</button>
+                <button class="w-full px-2  bg-blue-400 text-blue-800">Modifier</button>
+                <button class="w-full px-2  bg-red-400 text-red-800">Désactiver</button>
+                <button class="w-full px-2  bg-purple-400 text-red-800">Facturer</button>
+            </div>
+        </div>
+        <div class="text-center">
+            <h2 class="text-xl mb-2 bg-slate-400 p-2 ">Factures ({{ invoices.count  }})</h2>
+            <select class="w-full p-2" size="15">
+                {% for invoice in invoices %}
+                    {% if invoice.status == "quotation" %}
+                        <option class="bg-red-400 p-1 text-slate-600" value="{{ invoice.id }}">{{ invoice.reference }} ({{ invoice.customer }})</option>
+                    {% elif invoice.status == "command" %}
+                        <option class="bg-blue-500 p-1 text-slate-600" value="{{ invoice.id }}">{{ invoice.reference }} ({{ invoice.customer }})</option>
+                    {% elif invoice.status == "invoice" %}
+                        <option class="bg-green-500 p-1 text-slate-600" value="{{ invoice.id }}">{{ invoice.reference }} ({{ invoice.customer }})</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <div class="grid grid-cols-2 gap-1 m-2">
+                <button class="w-full px-2  bg-green-400 text-green-800">Ajouter</button>
+                <button class="w-full px-2  bg-blue-400 text-blue-800">Modifier</button>
+            </div>
+        </div>
+        <div class="text-center">
+            <h2 class="text-xl mb-2 bg-slate-400 p-2 ">Lignes de facture</h2>
+            <select class="w-full p-2" size="15">
+                {% for line in invoice_lines %}
+                    <option class="p-1 text-slate-600" value="{{ line.id }}">{{ line.invoice }}</option>
+                {% endfor %}
+            </select>
+        </div>
     </div>
-</body>
-</html>
+
+<!--    <table class="table bg-slate-500">-->
+<!--        <thead class="text-xs text-white uppercase">-->
+<!--            <tr>-->
+<!--                <th class="px-6 py-3">Date</th>-->
+<!--                <th class="px-6 py-3">Category</th>-->
+<!--                <th class="px-6 py-3">Type</th>-->
+<!--                <th class="px-6 py-3">Amount</th>-->
+<!--            </tr>-->
+<!--        </thead>-->
+
+<!--        <tbody class="bg-slate-800">-->
+<!--                <tr>-->
+<!--                    <td>qsdfqdsfqsdf</td>-->
+<!--                    <td>qsdfqsdfsqdfsqdfsqfdsq</td>-->
+<!--                    <td>sdqfqsdfsdqf</td>-->
+<!--                    <td>qsdfsqdfsqd</td>-->
+<!--                </tr>-->
+<!--        </tbody>-->
+<!--    </table>-->
+{% endblock content%}

@@ -7,6 +7,13 @@ class company_form(ModelForm):
         model = Company
         fields = "__all__"
 
+        DEALER_OR_CUSTOMER = (
+            ("dealer", "Dealer"),
+            ("customer", "Customer"),
+        )
+
+        # is_dealer_or_customer = forms.CheckboxSelectMultiple(choices=DEALER_OR_CUSTOMER)
+
         widgets = {
-            'is_dealer_or_customer': forms.CheckboxSelectMultiple(),
+                'is_dealer_or_customer': forms.CheckboxSelectMultiple(choices=DEALER_OR_CUSTOMER),
         }

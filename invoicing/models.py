@@ -1,5 +1,6 @@
 import datetime
 
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 import django.utils.timezone
@@ -218,6 +219,11 @@ class Company(models.Model):
             ('zambia', 'Zambia'),
             ('zimbabwe', 'Zimbabwe'),
     )
+    DEALER_OR_CUSTOMER = (
+        ("dealer", "Dealer"),
+        ("customer", "Customer"),
+    )
+
     type = models.CharField(choices=TYPES,max_length=15,blank=False) # Company type : SCS, SRL,...
     name = models.CharField(max_length=50, unique=True, blank=False, null=False)
     street = models.CharField(max_length=100, blank=True, null=True)
@@ -228,9 +234,14 @@ class Company(models.Model):
     country = models.CharField(choices=COUNTRIES, max_length=40, blank=False, default='belgique')
     phone = models.CharField(max_length=30, blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
-    is_dealer_or_customer = models.CharField(max_length=20,choices=(("dealer", "Dealer"), ("customer", "Customer")),
-                                            blank=False,default='customer',help_text="Sélectionnez une ou plusieurs valeurs")
+    # is_dealer_or_customer = models.CharField(max_length=30, blank=False, help_text="Sélectionnez une ou plusieurs valeurs")
+    is_dealer = models.BooleanField(default=False)
+    is_customer = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True) # because not allowed to delete company
+
+    def clean(self):
+        if not self.is_dealer and not self.is_customer:
+            raise ValidationError("Doît être soir un fournisseur, un client ou les deux !")
 
     def __str__(self) -> str:
         return f"{self.name} {self.type} - {self.city}"
@@ -281,7 +292,7 @@ class Item(models.Model):
 class Invoice(models.Model):
     customer = models.ForeignKey(Customer,on_delete=models.PROTECT, blank=False, null=True)
     creation_date_time = models.DateTimeField(default=datetime.now())
-    reference = models.CharField(max_length=15, blank=False,default='XXX/XXXX/XXXXXX') # ex: FAC/2024/123456
+    reference = models.CharField(max_length=15, blank=False, default='XXX/XXXX/XXXXXX') # ex: FAC/2024/123456
     status = models.CharField(max_length=10,choices=(('quotation','Quotation'), ('command','Command'),('invoice', 'Invoice')),default='quotation')
 
     def __str__(self):

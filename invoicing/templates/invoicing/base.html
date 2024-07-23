@@ -1,4 +1,6 @@
 {% load static %}
+{% load crispy_forms_tags %}
+{% load tailwind_filters %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -15,6 +17,7 @@
 
     <!-- HTMX -->
     <script src="{% static 'js/htmx.min.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
 
     <link href="{% static 'src/style.css' %}" rel="stylesheet">
 
@@ -22,9 +25,9 @@
 
     {% endblock %}
 </head>
-<body class="bg-slate-900 text-slate-100">
+<body id="content" >
     {% include 'invoicing/partial/navbar.html' %}
-    <div id="content" class="p-4">
+    <div  class="p-4">
 
         {% block title %}
         {% endblock %}

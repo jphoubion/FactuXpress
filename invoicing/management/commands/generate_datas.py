@@ -67,7 +67,7 @@ class Command(BaseCommand):
 
         fake = Faker()
         print("Generation des COMPANY")
-        types = [t[1] for t in Company.TYPES] # create a list from the tuple to get the left value
+        types = [t[0] for t in Company.TYPES] # create a list from the tuple to get the left value
         countries = [c[0] for c in Company.COUNTRIES]
         for _ in range(20):
             Company.objects.get_or_create(
@@ -81,7 +81,8 @@ class Command(BaseCommand):
                 country=random.choice(countries[1:]),
                 phone=random.choice(range(1000000,9999999)),
                 email=fake.unique.email(),
-                is_dealer_or_customer=random.choice(['dealer', 'customer']),
+                is_dealer=random.choice([True, False]),
+                is_customer=random.choice([True, False]),
                 is_active=random.choice([True, False])
             )
             fake.unique.clear()

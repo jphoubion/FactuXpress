@@ -11,6 +11,9 @@ class User(AbstractUser):
     pass
 
 class Company(models.Model):
+    class Meta:
+        ordering = ["name"]
+
     TYPES = (
         (None, 'Sélectionnez...'),
         ('srl','SRL'),
@@ -247,7 +250,10 @@ class Company(models.Model):
         return f"{self.name} {self.type} - {self.city}"
 
 class Customer(models.Model):
-    company = models.ForeignKey(Company,on_delete=models.PROTECT)
+    class Meta:
+        ordering = ["lastname"]
+
+    company = models.ForeignKey(Company,on_delete=models.PROTECT, blank=True, null=True)
     lastname = models.CharField(max_length=30, blank=False, null=False)
     firstname = models.CharField(max_length=30, blank=False, null=False)
     street = models.CharField(max_length=100,blank=True,null=True)
@@ -263,7 +269,7 @@ class Customer(models.Model):
     def __str__(self) -> str:
         return f"{self.lastname} {self.firstname}"
 
-class Unities_of_measure(models.Model):
+class Unity_of_measure(models.Model):
     short_description = models.CharField(max_length=10, blank=False, null=True, unique=True)
     long_description = models.CharField(max_length=30, blank=False, null=True)
 
@@ -271,14 +277,9 @@ class Unities_of_measure(models.Model):
         return f"{self.long_description} ({self.short_description})"
 
 class Item(models.Model):
-    # UNITY_OF_MESURE = (
-    #     ('M', 'Mètre(s)'),
-    #     ('KG', 'KG'),
-    #     ('PC', 'Pièce(s)')
-    # )
-    fastcode = models.CharField(max_length=10, blank=False, unique=True)
+    fastcode = models.CharField(max_length=15, blank=False, unique=True)
     description = models.TextField(max_length=255, blank=True)
-    unity_of_measure = models.ForeignKey(Unities_of_measure,on_delete=models.PROTECT, null=True)
+    unity_of_measure = models.ForeignKey(Unity_of_measure,on_delete=models.PROTECT, null=True)
     unit_price = models.DecimalField(max_digits=10,decimal_places=2,blank=False, null=0)
     remark = models.TextField(max_length=255)
     is_a_group_item = models.BooleanField(blank=False, default=False)
@@ -290,10 +291,13 @@ class Item(models.Model):
                 f" {self.description} : price = {self.unit_price}")
 
 class Invoice(models.Model):
+    class Meta:
+        ordering = ["reference"]
+
     customer = models.ForeignKey(Customer,on_delete=models.PROTECT, blank=False, null=True)
     creation_date_time = models.DateTimeField(default=datetime.now())
-    reference = models.CharField(max_length=15, blank=False, default='XXX/XXXX/XXXXXX') # ex: FAC/2024/123456
-    status = models.CharField(max_length=10,choices=(('quotation','Quotation'), ('command','Command'),('invoice', 'Invoice')),default='quotation')
+    reference = models.CharField(max_length=15, blank=False, default='XXX/XXXX/XXXXXX', unique=True) # ex: FAC/2024/123456
+    status = models.CharField(max_length=10,choices=(('quotation','Quotation'), ('order','Order'),('invoice', 'Invoice')),default='quotation')
 
     def __str__(self):
         return f"{self.reference} - {self.customer} - {self.creation_date_time}"

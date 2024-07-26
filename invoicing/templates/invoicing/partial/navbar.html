@@ -1,11 +1,11 @@
 {% load static %}
-<nav class="border-b mb-4 py-4 bg-slate-800">
+<nav class="border-b mb-2 py-4 bg-slate-800">
     <div class="flex flex-wrap items-center justify-between px-4">
       <a href="{% url 'invoicing:index' %}" class="flex items-center">
 <!--        <span>-->
 <!--            <img class="w-10 h-10 mr-2" src="{% static 'images/money-with-wings.svg' %}" />-->
 <!--        </span>-->
-        <span class="self-center text-4xl font-semibold whitespace-nowrap">FactuXpress</span>
+        <span class="self-center text-slate-200 text-4xl font-semibold whitespace-nowrap">FactuXpress</span>
       </a>
       <button data-collapse-toggle="navbar-default" type="button" class="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-default" aria-expanded="false">
         <span class="sr-only">Open main menu</span>
@@ -25,6 +25,20 @@
                     class="block py-2 pl-3 pr-4 text-white rounded md:p-0"
                     aria-current="page">
                         Sociétés
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'invoicing:customers' %}"
+                    class="block py-2 pl-3 pr-4 text-white rounded md:p-0"
+                    aria-current="page">
+                        Clients
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'invoicing:items' %}"
+                    class="block py-2 pl-3 pr-4 text-white rounded md:p-0"
+                    aria-current="page">
+                        Articles
                 </a>
             </li>
         {% if user.is_authenticated %}

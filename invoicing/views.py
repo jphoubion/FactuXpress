@@ -106,12 +106,8 @@ def create_customer(request):
 
 @login_required()
 def update_customer(request,pk):
-    print(pk)
-    if pk == 0:
-        print(request.GET.get('customer_id'))
-        customer = Customer.objects.get(pk=request.GET.get('customer_id'))
-    else:
-        customer = Customer.objects.get(pk=pk)
+
+    customer = Customer.objects.get(pk=pk)
 
     if request.method == "GET":
         form = CustomerForm(instance=customer)
@@ -120,20 +116,22 @@ def update_customer(request,pk):
         form = CustomerForm(request.POST,instance=customer)
         if form.is_valid():
             form.save()
-            return redirect("invoicing:index")
+            return redirect("invoicing:customers")
         return render(request, "invoicing/update_customer.html", {'form': form, 'customer': customer})
 
 
 @login_required()
 def deactivate_customer(request, pk):
-    if pk == 0:
-        print(request.GET.get('customer_id'))
-        customer = Customer.objects.get(pk=request.GET.get('customer_id'))
+
+    customer = Customer.objects.get(pk=pk)
+
+    if customer.is_active:
+        customer.is_active = False
     else:
-        customer = Customer.objects.get(pk=pk)
-    customer.is_active = False
+        customer.is_active = True
+
     customer.save(update_fields=['is_active'])
-    return redirect("invoicing:index")
+    return redirect("invoicing:customers")
 
 
 @login_required()

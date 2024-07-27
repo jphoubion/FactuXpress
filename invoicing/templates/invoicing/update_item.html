@@ -1,0 +1,73 @@
+{% extends 'invoicing/base.html' %}
+{% load static %}
+{% load tailwind_filters %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+
+{% block title %}
+{% endblock title%}
+
+{% block content %}
+<div class="w-1/2 mx-auto p-4 form-control">
+    <h1 class="text-3xl bold bg-slate-600 p-2 mb-2">Mise à jour d'un article</h1>
+    <form class="p-4 form-control border border-slate-400 rounded"
+          action="{% url 'invoicing:update-item' item.id %}"
+            method="POST">
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+            <div class="bg-red-600 text-red-200 text-xl p-2 rounded">{{ form.non_field_errors }}</div>
+        {% endif %}
+        <table class="">
+                <tbody>
+                    <tr>
+                        <th class="">{{ form.fastcode.label }} </th>
+                        <td>{{ form.fastcode }}{{ form.fastcode.errors }}</td>
+                    </tr>
+                    <tr>
+                        <th class="">{{ form.description.label }} </th>
+                        <td>{{ form.description }}{{ form.description.errors }}</td>
+                    </tr>
+                    <tr>
+                        <th class="">{{ form.unity_of_measure.label }} </th>
+                        <td>{{ form.unity_of_measure }}{{ form.unity_of_measure.errors }}</td>
+                    </tr>
+                    <tr>
+                        <th class="">{{ form.unit_price.label }} </th>
+                        <td>{{ form.unit_price }}{{ form.unit_price.errors }}</td>
+                    </tr>
+                    <tr>
+                        <th class="">{{ form.remark.label }} </th>
+                        <td>{{ form.remark }}{{ form.remark.errors }}</td>
+                    </tr>
+                    <tr>
+                        <th>{{ form.is_a_group_item.label }}</th>
+                        <td>
+                            {% if form.is_a_group_item.value %}
+                                <input type="checkbox" name="is_a_group_item" id="id_is_group_item"
+                                onclick="show_group_items()" checked>
+                            {% else %}
+                                <input type="checkbox" name="is_a_group_item" id="id_is_group_item"
+                                    onclick="show_group_items()">
+                            {% endif %}
+                            {{ form.is_a_group_item.errors }}
+                        </td>
+                    </tr>
+                    {% if form.is_a_group_item.value %}
+                        <tr id="group_items">
+                    {% else %}
+                        <tr id="group_items" class="hidden">
+                    {% endif %}
+                            <th>{{ form.group_item_child_item.label }} </th>
+                            <td>{{ form.group_item_child_item }}
+                                <span class="text-red-400 font-bold">{{ form.group_item_child_item.errors }}</span></td>
+                    </tr>
+                </tbody>
+        </table>
+        <div class="grid grid-cols-2 gap-4 mt-4">
+            <button type="submit" class="btn bg-green-800 text-green-200 w-full rounded">Enregistrer</button>
+            <a href="{% url 'invoicing:items' %}" class="btn bg-red-600 w-full rounded">Annuler</a>
+        </div>
+    </form>
+</div>
+
+{% endblock content%}

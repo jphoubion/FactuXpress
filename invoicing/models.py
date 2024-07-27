@@ -1,4 +1,5 @@
 import datetime
+import logging
 
 from django.core.exceptions import ValidationError
 from django.db import models
@@ -276,6 +277,7 @@ class Unity_of_measure(models.Model):
     def __str__(self):
         return f"{self.long_description} ({self.short_description})"
 
+
 class Item(models.Model):
     fastcode = models.CharField(max_length=15, blank=False, unique=True)
     description = models.TextField(max_length=255, blank=True)
@@ -283,12 +285,13 @@ class Item(models.Model):
     unit_price = models.DecimalField(max_digits=10,decimal_places=2,blank=False, null=0)
     remark = models.TextField(max_length=255)
     is_a_group_item = models.BooleanField(blank=False, default=False)
-    is_a_child_item = models.BooleanField(blank=False, default=False)
-    parent_of_child_item = models.ForeignKey('self', on_delete=models.PROTECT, blank=True, null=True)
+    # is_a_child_item = models.BooleanField(blank=False, default=False)
+    # parent_of_child_item = models.ForeignKey('self', on_delete=models.PROTECT, blank=True, null=True)
+    group_item_child_item = models.ManyToManyField('self',verbose_name="Contient", blank=True, null=True)
 
     def __str__(self) -> str:
-        return (f"Aticle groupé : {self.is_a_group_item}\nArticle enfant : {self.is_a_child_item}\n{self.fastcode}"
-                f" {self.description} : price = {self.unit_price}")
+        return f"{self.fastcode}"
+
 
 class Invoice(models.Model):
     class Meta:

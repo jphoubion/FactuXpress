@@ -4,87 +4,86 @@
 {% load tailwind_filters %}
 
 {% block title %}
-    <h1 class="text-3xl bold bg-slate-600 p-2 mb-2">Gestion des articles</h1>
+    <h1 class="text-3xl bold bg-slate-600 p-2 mb-2 rounded">Gestion des articles</h1>
 {% endblock title%}
 
 {% block content %}
-<ul>
-    {% for item in items %}
-        <li>
-            {{ item }}
-        </li>
-    {% endfor %}
-</ul>
+    <div class="flex bg-slate-500 p-2 my-2 rounded">
+        <button class="btn bg-green-400 text-green-800 mr-2 p-2 rounded shadow" type="button"
+               hx-get="{% url 'invoicing:create-item' %}"
+               hx-target="#content"
+               hx-swap="innerHTML"
+               hx-push-url="true">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+            Ajouter
+        </button>
+        <button class="btn bg-orange-400 text-orange-800 mr-2 p-2 rounded shadow" type="button">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6.72 13.829c-.24.03-.48.062-.72.096m.72-.096a42.415 42.415 0 0 1 10.56 0m-10.56 0L6.34 18m10.94-4.171c.24.03.48.062.72.096m-.72-.096L17.66 18m0 0 .229 2.523a1.125 1.125 0 0 1-1.12 1.227H7.231c-.662 0-1.18-.568-1.12-1.227L6.34 18m11.318 0h1.091A2.25 2.25 0 0 0 21 15.75V9.456c0-1.081-.768-2.015-1.837-2.175a48.055 48.055 0 0 0-1.913-.247M6.34 18H5.25A2.25 2.25 0 0 1 3 15.75V9.456c0-1.081.768-2.015 1.837-2.175a48.041 48.041 0 0 1 1.913-.247m10.5 0a48.536 48.536 0 0 0-10.5 0m10.5 0V3.375c0-.621-.504-1.125-1.125-1.125h-8.25c-.621 0-1.125.504-1.125 1.125v3.659M18 10.5h.008v.008H18V10.5Zm-3 0h.008v.008H15V10.5Z" />
+            </svg>
+            Imprimer la liste
+        </button>
+        <fieldset class="flex items-center">
+          <div class="px-4 text-xl">
+            <input type="radio" id="all" name="items" value="all" checked />
+            <label for="all">Tous</label>
+          </div>
+          <div class="px-4 text-xl">
+            <input type="radio" id="grouped" name="items" value="grouped" />
+            <label for="grouped">Groupés uniquement</label>
+          </div>
 
-
-<!--    <table class="table-auto bg-slate-500 w-full">-->
-<!--        <thead class="text-xs text-white uppercase">-->
-<!--            <tr>-->
-<!--                <th class="px-6 py-3">Nom</th>-->
-<!--                <th class="px-6 py-3">Adresse</th>-->
-<!--                <th class="px-6 py-3">Tél.</th>-->
-<!--                <th class="px-6 py-3">Email</th>-->
-<!--                <th class="px-6 py-3">Fournisseur/Client</th>-->
-<!--                <th class="px-6 py-3">Active</th>-->
-<!--                <th class="px-6 py-3"></th>-->
-<!--                <th class="px-6 py-3"></th>-->
-<!--            </tr>-->
-<!--        </thead>-->
-<!--        <tbody class="bg-slate-800">-->
-<!--            {% for customer in customers %}-->
-<!--                <tr class="border-b hover:bg-slate-700">-->
-<!--                    <td class="w-128 p-2"><span class="font-black">{{company.name}}</span> <small>({{company.type}})</small></td>-->
-<!--                    <td class="p-2">{{company.street}}, {{company.number}}/{{company.box}}<br>-->
-<!--                        {{company.postcode}} {{company.city}}<br> {{company.country}}</td>-->
-<!--                    <td class="p-2">{{company.phone}}</td>-->
-<!--                    {% if company.email %}-->
-<!--                        <td class="p-2 text-center"><a class="border-b" href="mailto:{{company.email}}">{{company.email}}</a></td>-->
-<!--                    {% else %}-->
-<!--                        <td class="p-2 text-center">-->
-<!--                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 text-red-400">-->
-<!--                                <path fill-rule="evenodd" d="m6.72 5.66 11.62 11.62A8.25 8.25 0 0 0 6.72 5.66Zm10.56 12.68L5.66 6.72a8.25 8.25 0 0 0 11.62 11.62ZM5.105 5.106c3.807-3.808 9.98-3.808 13.788 0 3.808 3.807 3.808 9.98 0 13.788-3.807 3.808-9.98 3.808-13.788 0-3.808-3.807-3.808-9.98 0-13.788Z" clip-rule="evenodd" />-->
-<!--                            </svg>-->
-<!--                        </td>-->
-<!--                    {% endif %}-->
-<!--                    <td class="p-2 text-center">-->
-<!--                        {% if company.is_dealer and company.is_customer%}-->
-<!--                            <span class="inline-flex items-center rounded-md bg-orange-600 px-2 py-1 text-xs font-medium text-orange-100 ring-1 ring-inset ring-gray-500/10">dealer</span>-->
-<!--                        {% elif company.is_dealer %}-->
-<!--                            <span class="inline-flex items-center rounded-md bg-blue-800 px-2 py-1 text-xs font-medium text-blue-100 ring-1 ring-inset ring-gray-500/10">Dealer / Customer</span>-->
-<!--                        {% elif company.is_customer %}-->
-<!--                            <span class="inline-flex items-center rounded-md bg-green-600 px-2 py-1 text-xs font-medium text-green-100 ring-1 ring-inset ring-gray-500/10">customer</span>-->
-<!--                        {% else %}-->
-<!--                            <span class="inline-flex items-center rounded-md bg-red-600 px-2 py-1 text-xl font-medium text-red-100 ring-1 ring-inset ring-gray-500/10">ERREUR</span>-->
-<!--                        {% endif %}-->
-<!--                    </td>-->
-<!--                    {% if company.is_active %}-->
-<!--                        <td class="p-2">-->
-<!--                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 text-green-400">-->
-<!--                                <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd" />-->
-<!--                            </svg>-->
-<!--                        </td>-->
-
-<!--                    {% else %}-->
-<!--                        <td class="p-2">-->
-<!--                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 text-red-400">-->
-<!--                              <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12ZM12 8.25a.75.75 0 0 1 .75.75v3.75a.75.75 0 0 1-1.5 0V9a.75.75 0 0 1 .75-.75Zm0 8.25a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Z" clip-rule="evenodd" />-->
-<!--                            </svg>-->
-<!--                        </td>-->
-<!--                    {% endif %}-->
-
-<!--                    <td class="p-2">-->
-<!--                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 text-green-400">-->
-<!--                          <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z" />-->
-<!--                          <path d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />-->
-<!--                        </svg>-->
-<!--                    </td>-->
-<!--                    <td class="p-2">-->
-<!--                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 text-red-400">-->
-<!--                          <path fill-rule="evenodd" d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z" clip-rule="evenodd" />-->
-<!--                        </svg>-->
-<!--                    </td>-->
-<!--                </tr>-->
-<!--            {% endfor %}-->
-<!--        </tbody>-->
-<!--    </table>-->
+          <div class="px-4 text-xl">
+            <input type="radio" id="normal" name="items" value="normal" />
+            <label for="normal">Normaux uniquement</label>
+          </div>
+        </fieldset>
+    </div>
+    <table class="table-auto bg-slate-500 w-full rounded">
+        <thead class="text-xs text-white uppercase">
+            <tr>
+                <th class="w-4 px-2 py-3">Groupé ?</th>
+                <th class="w-4 px-2 py-3">Code rapide</th>
+                <th class="w-64 px-2 py-3">Description</th>
+                <th class="w-64 px-2 py-3">Remarque</th>
+                <th class="w-4 px-2 py-3">Unité</th>
+                <th class="w-4 px-2 py-3">P.U.</th>
+                <th class="w-4 px-2 py-3"></th>
+            </tr>
+        </thead>
+        <tbody class="bg-slate-900 border">
+            {% for item in items %}
+                {% if item.is_a_group_item %}
+                    <tr class="border-b hover:bg-slate-700 text-green-400">
+                        <td class="p-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 text-green-400">
+                                    <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd" />
+                                </svg>
+                        </td>
+                        {% else %}
+                    <tr class="border-b hover:bg-slate-700">
+                        <td class="p-2">
+                        </td>
+                {% endif %}
+                    <td class="p-2"><span class="font-black">{{item.fastcode}}</span></td>
+                    <td class="w-64 p-2">{{item.description}}</td>
+                    <td class="w-64 p-2">{{item.remark}}</td>
+                    <td class="p-2 text-center">{{item.unity_of_measure.long_description}}</td>
+                    <td class="p-2 text-right">{{item.unit_price}}</td>
+                    <td class="p-2"> <!-- Modify -->
+                        <svg hx-get="{% url 'invoicing:update-item' item.id %}"
+                            hx-target="#content"
+                            hx-swap="innerHTML"
+                            hx-push-url="true"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6 text-green-400 hover:cursor-pointer">
+                          <path d="M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z" />
+                          <path d="M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z" />
+                        </svg>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock content%}

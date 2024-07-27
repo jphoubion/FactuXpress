@@ -23,6 +23,5 @@ urlpatterns = [
     path("items", views.display_items, name="items"),
     path("create_item", views.create_item, name="create-item"),
     path("update_item/<int:pk>", views.update_item, name="update-item"),
-    path("deactivate_item/<int:pk>/", views.deactivate_item, name="deactivate-item"),
     path("print_item/<int:pk>", views.print_item, name="print-item"),
 ]

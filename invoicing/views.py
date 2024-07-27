@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -157,23 +158,36 @@ def display_items(request):
 def create_item(request):
     if request.method == "POST":
         form = ItemForm(request.POST)
+        print(request.POST)
+        print(form.is_valid())
         if form.is_valid():
-            form.save()
+            new_item = form.save(commit=False)
+            new_item.save()
+            form.save_m2m()
             return redirect("invoicing:items")
         else:
             form = ItemForm(request.POST)
             return render(request, "invoicing/create_item.html", {"form": form})
     else:
+        # form = ItemForm(key='group_item_child_item')
         form = ItemForm()
         return render(request, "invoicing/create_item.html", {"form": form})
 
 @login_required()
 def update_item(request,pk):
-    pass
 
-@login_required()
-def deactivate_item(request,pk):
-    pass
+    item = Item.objects.get(pk=pk)
+
+    if request.method == "GET":
+        form = ItemForm(instance=item)
+        return render(request, "invoicing/update_item.html", {'form': form, 'item': item})
+    else:
+        form = ItemForm(request.POST,instance=item)
+        if form.is_valid():
+            form.save()
+            return redirect("invoicing:items")
+        return render(request, "invoicing/update_item.html", {'form': form, 'item': item})
+
 
 @login_required()
 def print_item(request,pk):

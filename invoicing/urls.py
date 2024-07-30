@@ -21,6 +21,7 @@ urlpatterns = [
     path("print_customer/<int:pk>", views.print_customer, name="print-customer"),
 
     path("items", views.display_items, name="items"),
+    path("items/<str:item_type>", views.display_items_filtered, name="display-items-filtered"),
     path("create_item", views.create_item, name="create-item"),
     path("update_item/<int:pk>", views.update_item, name="update-item"),
     path("print_item/<int:pk>", views.print_item, name="print-item"),

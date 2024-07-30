@@ -1,0 +1,64 @@
+{% if item_type == "all" or item_type is None %}
+    <fieldset id="items_filter" class="flex items-center">
+      <div class="px-4 py-2 text-xl bg-green-400 text-green-800 rounded">
+          <label for="all">Tous</label>
+            <input type="radio" id="all" name="items" value="all" checked
+            hx-post="{% url 'invoicing:display-items-filtered' 'all' %}"
+          hx-target="#content" hx-swap="innerHTML" hx-push-url="true"/>
+      </div>
+      <div class="px-4 text-xl">
+          <label for="grouped">Groupés uniquement</label>
+          <input type="radio" id="grouped" name="items" value="grouped"
+            hx-post="{% url 'invoicing:display-items-filtered' 'grouped' %}"
+          hx-target="#content" hx-swap="innerHTML" hx-push-url="true"/>
+      </div>
+      <div class="px-4 text-xl">
+          <label for="normal">Normaux uniquement</label>
+          <input type="radio" id="normal" name="items" value="normal"
+          hx-post="{% url 'invoicing:display-items-filtered' 'normal' %}"
+          hx-target="#content" hx-swap="innerHTML" hx-push-url="true"/>
+      </div>
+    </fieldset>
+{% elif item_type == "grouped" %}
+    <fieldset id="items_filter" class="flex items-center">
+      <div class="px-4 text-xl">
+          <label for="all">Tous</label>
+            <input type="radio" id="all" name="items" value="all"
+            hx-post="{% url 'invoicing:display-items-filtered' 'all' %}"
+          hx-target="#content" hx-swap="innerHTML" hx-push-url="true"/>
+      </div>
+      <div class="px-4 py-2 text-xl bg-green-400 text-green-800 rounded">
+          <label for="grouped">Groupés uniquement</label>
+          <input type="radio" id="grouped" name="items" value="grouped" checked
+            hx-post="{% url 'invoicing:display-items-filtered' 'grouped' %}"
+          hx-target="#content" hx-swap="innerHTML" hx-push-url="true"/>
+      </div>
+      <div class="px-4 text-xl">
+          <label for="normal">Normaux uniquement</label>
+          <input type="radio" id="normal" name="items" value="normal"
+          hx-post="{% url 'invoicing:display-items-filtered' 'normal' %}"
+          hx-target="#content" hx-swap="innerHTML" hx-push-url="true"/>
+      </div>
+    </fieldset>
+{% else %}
+    <fieldset id="items_filter" class="flex items-center">
+      <div class="px-4 text-xl">
+          <label for="all">Tous</label>
+            <input type="radio" id="all" name="items" value="all"
+            hx-post="{% url 'invoicing:display-items-filtered' 'all' %}"
+          hx-target="#content" hx-swap="innerHTML" hx-push-url="true"/>
+      </div>
+      <div class="px-4 text-xl">
+          <label for="grouped">Groupés uniquement</label>
+          <input type="radio" id="grouped" name="items" value="grouped"
+            hx-post="{% url 'invoicing:display-items-filtered' 'grouped' %}"
+          hx-target="#content" hx-swap="innerHTML" hx-push-url="true"/>
+      </div>
+      <div class="px-4 py-2 text-xl bg-green-400 text-green-800 rounded">
+          <label for="normal">Normaux uniquement</label>
+          <input type="radio" id="normal" name="items" value="normal" checked
+          hx-post="{% url 'invoicing:display-items-filtered' 'normal' %}"
+          hx-target="#content" hx-swap="innerHTML" hx-push-url="true"/>
+      </div>
+    </fieldset>
+{% endif %}

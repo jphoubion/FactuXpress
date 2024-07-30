@@ -24,7 +24,7 @@
 
     {% endblock %}
 </head>
-<body id="content" class="bg-slate-800 ">
+<body id="content" class="bg-slate-800 " hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     {% include 'invoicing/partial/navbar.html' %}
     <div class="mt-16 p-4">
 

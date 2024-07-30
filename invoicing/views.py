@@ -1,3 +1,5 @@
+import logging
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
@@ -153,6 +155,19 @@ def print_customer(request,pk):
 def display_items(request):
     items = Item.objects.all()
     return render(request, "invoicing/display_items.html", {'items': items})
+
+@login_required()
+def display_items_filtered(request, item_type):
+    match item_type:
+        case "all":
+            items = Item.objects.all()
+        case "grouped":
+            items = Item.objects.filter(is_a_group_item=True)
+        case "normal":
+            items = Item.objects.filter(is_a_group_item=False)
+
+    return render(request, "invoicing/display_items.html", {'items': items, 'item_type':item_type})
+
 
 @login_required()
 def create_item(request):

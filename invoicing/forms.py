@@ -42,7 +42,7 @@ class ItemForm(ModelForm):
         widgets = {
                 'description': forms.Textarea(attrs={'rows': 4}),
                 'remark': forms.Textarea(attrs={'rows': 4}),
-                'group_item_child_item': forms.SelectMultiple(attrs={'size': 10})
+                'group_item_child_item': forms.SelectMultiple(attrs={'size': 10, 'class': "w-full"})
         }
 
     def clean(self):

@@ -18,27 +18,32 @@
         {% if form.non_field_errors %}
             <div class="bg-red-600 text-red-200 text-xl p-2 rounded">{{ form.non_field_errors }}</div>
         {% endif %}
-        <table class="">
+        <table class="w-full border-separate border-spacing-4 ">
             <tbody>
                 <tr>
                     <th class="">{{ form.fastcode.label }} </th>
-                    <td>{{ form.fastcode }}{{ form.fastcode.errors }}</td>
+                    <td>{{ form.fastcode|append_attr:"class: w-full p-2 rounded"|append_attr:"autofocus" }}
+                        {{ form.fastcode.errors }}</td>
                 </tr>
                 <tr>
                     <th class="">{{ form.description.label }} </th>
-                    <td>{{ form.description }}{{ form.description.errors }}</td>
+                    <td>{{ form.description|append_attr:"class: w-full p-2 rounded" }}
+                        {{ form.description.errors }}</td>
                 </tr>
                 <tr>
                     <th class="">{{ form.unity_of_measure.label }} </th>
-                    <td>{{ form.unity_of_measure }}{{ form.unity_of_measure.errors }}</td>
+                    <td>{{ form.unity_of_measure|append_attr:"class: w-full p-2 rounded" }}
+                        {{ form.unity_of_measure.errors }}</td>
                 </tr>
                 <tr>
                     <th class="">{{ form.unit_price.label }} </th>
-                    <td>{{ form.unit_price }}{{ form.unit_price.errors }}</td>
+                    <td>{{ form.unit_price|append_attr:"class: w-full p-2 rounded" }}
+                        {{ form.unit_price.errors }}</td>
                 </tr>
                 <tr>
                     <th class="">{{ form.remark.label }} </th>
-                    <td>{{ form.remark }}{{ form.remark.errors }}</td>
+                    <td>{{ form.remark|append_attr:"class: w-full p-2 rounded" }}
+                        {{ form.remark.errors }}</td>
                 </tr>
                 <tr>
                     <th>{{ form.is_a_group_item.label }} </th>
@@ -49,7 +54,8 @@
                 </tr>
                 <tr id="group_items" class="hidden">
                     <th>{{ form.group_item_child_item.label }} </th>
-                    <td>{{ form.group_item_child_item }}{{ form.group_item_child_item.errors }}</td>
+                    <td>{{ form.group_item_child_item|append_attr:"class: w-full p-2 rounded" }}
+                        {{ form.group_item_child_item.errors }}</td>
                 </tr>
             </tbody>
         </table>

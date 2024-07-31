@@ -13,7 +13,7 @@
           hx-target="#content" hx-swap="innerHTML" hx-push-url="true"/>
       </div>
       <div class="px-4 text-xl">
-          <label for="normal">Normaux uniquement</label>
+          <label for="normal">Non groupés uniquement</label>
           <input type="radio" id="normal" name="items" value="normal"
           hx-post="{% url 'invoicing:display-items-filtered' 'normal' %}"
           hx-target="#content" hx-swap="innerHTML" hx-push-url="true"/>
@@ -34,7 +34,7 @@
           hx-target="#content" hx-swap="innerHTML" hx-push-url="true"/>
       </div>
       <div class="px-4 text-xl">
-          <label for="normal">Normaux uniquement</label>
+          <label for="normal">Non groupés uniquement</label>
           <input type="radio" id="normal" name="items" value="normal"
           hx-post="{% url 'invoicing:display-items-filtered' 'normal' %}"
           hx-target="#content" hx-swap="innerHTML" hx-push-url="true"/>
@@ -55,7 +55,7 @@
           hx-target="#content" hx-swap="innerHTML" hx-push-url="true"/>
       </div>
       <div class="px-4 py-2 text-xl bg-green-400 text-green-800 rounded">
-          <label for="normal">Normaux uniquement</label>
+          <label for="normal">Non groupés uniquement</label>
           <input type="radio" id="normal" name="items" value="normal" checked
           hx-post="{% url 'invoicing:display-items-filtered' 'normal' %}"
           hx-target="#content" hx-swap="innerHTML" hx-push-url="true"/>

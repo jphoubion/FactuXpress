@@ -4,6 +4,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.core.paginator import Paginator
+
 from .forms import CompanyForm, CustomerForm, ItemForm, UnitiesOfMeasureForm, InvoiceForm, InvoiceLineForm
 from .models import Company, Customer, Item, Unity_of_measure, Invoice, Invoice_line
 
@@ -27,7 +29,12 @@ def index(request):
 @login_required()
 def display_companies(request):
     companies = Company.objects.all()
-    context = {'companies': companies}
+
+    paginator = Paginator(companies, 10)  # Show 10 contacts per page.
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    context = {'companies': companies, "page_obj": page_obj}
     return render(request, "invoicing/display_companies.html", context)
 
 @login_required()
@@ -40,8 +47,12 @@ def display_companies_filtered(request, company_type):
         case "inactive":
             companies = Company.objects.filter(is_active=False)
 
-    return render(request, "invoicing/display_companies.html", {'companies': companies,
-                                                                                    'company_type':company_type})
+    paginator = Paginator(companies, 10)  # Show 10 contacts per page.
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    context = {'companies': companies, 'company_type': company_type, "page_obj": page_obj}
+
+    return render(request, "invoicing/display_companies.html", context)
 
 @login_required()
 def create_company(request):
@@ -100,7 +111,13 @@ def print_company(request,pk):
 @login_required()
 def display_customers(request):
     customers = Customer.objects.all()
-    context = {'customers': customers}
+
+    paginator = Paginator(customers, 10)  # Show 10 contacts per page.
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    context = {'customers': customers, "page_obj": page_obj}
+
     return render(request, "invoicing/display_customers.html", context)
 
 @login_required()
@@ -113,8 +130,13 @@ def display_customers_filtered(request, customer_type):
         case "inactive":
             customers = Customer.objects.filter(is_active=False)
 
-    return render(request, "invoicing/display_customers.html", {'customers': customers,
-                                                                                    'customer_type':customer_type})
+    paginator = Paginator(customers, 10)  # Show 10 contacts per page.
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    context = {'customers': customers, 'customer_type': customer_type, "page_obj": page_obj}
+
+    return render(request, "invoicing/display_customers.html", context)
 
 
 @login_required()
@@ -179,7 +201,13 @@ def print_customer(request,pk):
 @login_required()
 def display_items(request):
     items = Item.objects.all()
-    return render(request, "invoicing/display_items.html", {'items': items})
+
+    paginator = Paginator(items, 10)  # Show 10 contacts per page.
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    context = {'items': items, "page_obj": page_obj}
+    return render(request, "invoicing/display_items.html", context)
 
 @login_required()
 def display_items_filtered(request, item_type):
@@ -191,7 +219,13 @@ def display_items_filtered(request, item_type):
         case "normal":
             items = Item.objects.filter(is_a_group_item=False)
 
-    return render(request, "invoicing/display_items.html", {'items': items, 'item_type':item_type})
+    paginator = Paginator(items, 10)  # Show 10 contacts per page.
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    context = {'items': items, 'item_type':item_type, "page_obj": page_obj}
+
+    return render(request, "invoicing/display_items.html", context)
 
 
 @login_required()

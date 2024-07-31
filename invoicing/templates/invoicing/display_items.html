@@ -45,7 +45,7 @@
             </tr>
         </thead>
         <tbody class="bg-slate-900 ">
-            {% for item in items %}
+            {% for item in page_obj %}
                 {% if item.is_a_group_item %}
                     <tr class="border-b hover:bg-slate-700 text-green-400">
                         <td class="p-2">
@@ -77,4 +77,21 @@
             {% endfor %}
         </tbody>
     </table>
+    <div class="pagination text-center mt-2">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a class="btn bg-blue-400 text-blue-800 rounded" href="?page=1">&laquo; first</a>
+                <a class="btn bg-blue-400 text-blue-800 rounded" href="?page={{ page_obj.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current font-bold">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a class="btn bg-blue-400 text-blue-800 rounded" href="?page={{ page_obj.next_page_number }}">next</a>
+                <a class="btn bg-blue-400 text-blue-800 rounded" href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
 {% endblock content%}

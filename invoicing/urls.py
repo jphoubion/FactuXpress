@@ -7,6 +7,7 @@ urlpatterns = [
     path("", views.index, name='index'),
 
     path("companies", views.display_companies, name="companies"),
+    path("companies/<str:company_type>", views.display_companies_filtered, name="display-companies-filtered"),
     path("create_company", views.create_company, name="create-company"),
     path("update_company/<int:pk>", views.update_company, name="update-company"),
     path("deactivate_company/<int:pk>/", views.deactivate_company, name="deactivate-company"),
@@ -14,6 +15,7 @@ urlpatterns = [
     path("print_company/<int:pk>", views.print_company, name="print-company"),
 
     path("customers", views.display_customers, name="customers"),
+    path("customers/<str:customer_type>", views.display_customers_filtered, name="display-customers-filtered"),
     path("create_customer", views.create_customer, name="create-customer"),
     path("update_customer/<int:pk>", views.update_customer, name="update-customer"),
     path("deactivate_customer/<int:pk>/", views.deactivate_customer, name="deactivate-customer"),

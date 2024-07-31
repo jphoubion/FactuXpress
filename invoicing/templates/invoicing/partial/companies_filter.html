@@ -1,0 +1,64 @@
+{% if company_type == "all" or company_type is None %}
+    <fieldset id="companies_filter" class="flex items-center">
+      <div class="px-4 py-2 text-xl bg-green-400 text-green-800 rounded">
+          <label for="all">Toutes</label>
+            <input type="radio" id="all" name="companies" value="all" checked
+            hx-post="{% url 'invoicing:display-companies-filtered' 'all' %}"
+          hx-target="#content" hx-swap="innerHTML" hx-push-url="true"/>
+      </div>
+      <div class="px-4 text-xl">
+          <label for="active">Actives</label>
+          <input type="radio" id="active" name="companies" value="active"
+            hx-post="{% url 'invoicing:display-companies-filtered' 'active' %}"
+          hx-target="#content" hx-swap="innerHTML" hx-push-url="true"/>
+      </div>
+      <div class="px-4 text-xl">
+          <label for="inactive">Inactives</label>
+          <input type="radio" id="inactive" name="companies" value="inactive"
+          hx-post="{% url 'invoicing:display-companies-filtered' 'inactive' %}"
+          hx-target="#content" hx-swap="innerHTML" hx-push-url="true"/>
+      </div>
+    </fieldset>
+{% elif company_type == "active" %}
+    <fieldset id="companies_filter" class="flex items-center">
+      <div class="px-4 text-xl">
+          <label for="all">Toutes</label>
+            <input type="radio" id="all" name="companies" value="all"
+            hx-post="{% url 'invoicing:display-companies-filtered' 'all' %}"
+          hx-target="#content" hx-swap="innerHTML" hx-push-url="true"/>
+      </div>
+      <div class="px-4 py-2 text-xl bg-green-400 text-green-800 rounded">
+          <label for="active">Actives</label>
+          <input type="radio" id="active" name="companies" value="active" checked
+            hx-post="{% url 'invoicing:display-companies-filtered' 'active' %}"
+          hx-target="#content" hx-swap="innerHTML" hx-push-url="true"/>
+      </div>
+      <div class="px-4 text-xl">
+          <label for="inactive">Inactives</label>
+          <input type="radio" id="inactive" name="companies" value="inactive" 
+          hx-post="{% url 'invoicing:display-companies-filtered' 'inactive' %}"
+          hx-target="#content" hx-swap="innerHTML" hx-push-url="true"/>
+      </div>
+    </fieldset>
+{% else %}
+    <fieldset id="companies_filter" class="flex items-center">
+      <div class="px-4 text-xl">
+          <label for="all">Toutes</label>
+            <input type="radio" id="all" name="companies" value="all"
+            hx-post="{% url 'invoicing:display-companies-filtered' 'all' %}"
+          hx-target="#content" hx-swap="innerHTML" hx-push-url="true"/>
+      </div>
+      <div class="px-4 text-xl">
+          <label for="active">Actives</label>
+          <input type="radio" id="active" name="companies" value="grouped"
+            hx-post="{% url 'invoicing:display-companies-filtered' 'active' %}"
+          hx-target="#content" hx-swap="innerHTML" hx-push-url="true"/>
+      </div>
+      <div class="px-4 py-2 text-xl bg-green-400 text-green-800 rounded">
+          <label for="inactive">Inactives</label>
+          <input type="radio" id="inactive" name="companies" value="inactive"  checked
+          hx-post="{% url 'invoicing:display-companies-filtered' 'inactive' %}"
+          hx-target="#content" hx-swap="innerHTML" hx-push-url="true"/>
+      </div>
+    </fieldset>
+{% endif %}

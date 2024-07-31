@@ -17,7 +17,7 @@
         {% if form.non_field_errors %}
             <div class="bg-red-600 text-red-200 text-xl p-2 rounded">{{ form.non_field_errors }}</div>
         {% endif %}
-        <table class="w-full border-separate border-spacing-4 ">
+        <table id="items_table" class="w-full border-separate border-spacing-2 ">
             <tbody>
                 <tr>
                     <th>{{ form.fastcode.label }} </th>

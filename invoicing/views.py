@@ -30,6 +30,18 @@ def display_companies(request):
     context = {'companies': companies}
     return render(request, "invoicing/display_companies.html", context)
 
+@login_required()
+def display_companies_filtered(request, company_type):
+    match company_type:
+        case "all":
+            companies = Company.objects.all()
+        case "active":
+            companies = Company.objects.filter(is_active=True)
+        case "inactive":
+            companies = Company.objects.filter(is_active=False)
+
+    return render(request, "invoicing/display_companies.html", {'companies': companies,
+                                                                                    'company_type':company_type})
 
 @login_required()
 def create_company(request):
@@ -90,6 +102,19 @@ def display_customers(request):
     customers = Customer.objects.all()
     context = {'customers': customers}
     return render(request, "invoicing/display_customers.html", context)
+
+@login_required()
+def display_customers_filtered(request, customer_type):
+    match customer_type:
+        case "all":
+            customers = Customer.objects.all()
+        case "active":
+            customers = Customer.objects.filter(is_active=True)
+        case "inactive":
+            customers = Customer.objects.filter(is_active=False)
+
+    return render(request, "invoicing/display_customers.html", {'customers': customers,
+                                                                                    'customer_type':customer_type})
 
 
 @login_required()
